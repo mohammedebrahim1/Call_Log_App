@@ -25,7 +25,7 @@ class CallReceive : BroadcastReceiver() {
             return
         }
 
-        if (intent.extras != null) {
+        if (intent.extras != null && intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER) != null) {
             val mblNum = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)
             println("Phone 2: $mblNum")
 
