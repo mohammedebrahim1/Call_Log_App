@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/android.iml" filepath="$PROJECT_DIR$/.idea/modules/android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/android.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/android.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1193791113/android.blue_thermal_printer.iml" filepath="$PROJECT_DIR$/.idea/modules/-1193791113/android.blue_thermal_printer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1528928483/android.path_provider.iml" filepath="$PROJECT_DIR$/.idea/modules/-1528928483/android.path_provider.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1834476114/android.permission_handler.iml" filepath="$PROJECT_DIR$/.idea/modules/-1834476114/android.permission_handler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1623273343/android.printing.iml" filepath="$PROJECT_DIR$/.idea/modules/-1623273343/android.printing.iml" />
+    </modules>
+  </component>
+</project>
