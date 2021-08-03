@@ -117,6 +117,7 @@
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-viewmodel:2.1.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.interpolator:interpolator:1.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.github.aykuttasil:CallRecorder:1.5.3@aar" level="project" />
+    <orderEntry type="module" module-name="android.shared_preferences" />
     <orderEntry type="module" module-name="android.permission_handler" />
     <orderEntry type="module" module-name="android.path_provider" />
     <orderEntry type="module" module-name="android.blue_thermal_printer" />

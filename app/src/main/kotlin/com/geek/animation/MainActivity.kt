@@ -1,32 +1,14 @@
 package com.geek.animation
 
 import android.Manifest
-import android.annotation.TargetApi
-import android.app.Activity
-import android.content.ContentValues.TAG
-import android.content.Context
-import android.content.ContextWrapper
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.media.MediaPlayer
-import android.media.MediaRecorder
-import android.os.BatteryManager
-import android.os.Build.VERSION
-import android.os.Build.VERSION_CODES
 import android.os.Bundle
-import android.os.Environment
-import android.os.PersistableBundle
-import android.util.Log
 import androidx.annotation.NonNull
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
-import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.plugin.common.MethodChannel
-import io.flutter.plugins.GeneratedPluginRegistrant
-import java.io.IOException
 
 
 class MainActivity: FlutterActivity() {
@@ -35,14 +17,155 @@ class MainActivity: FlutterActivity() {
 //    private var fileName: String = ""
     private  val CHANNEL = "test_activity"
     private val RECORD_REQUEST_CODE = 101
-
-
-
+    var prefs: SharedPreferences? = null
 
 
 //    var recorder: MediaRecorder? = null
 //
 //    var player: MediaPlayer? = null
+//class CallMonitor : BroadcastReceiver() {
+//    companion object {
+//        private var lastState = TelephonyManager.CALL_STATE_IDLE
+//        private var callStartTime: Date? = null
+//        private var isIncoming: Boolean = false
+//        private var savedNumber: String? = null
+//        private var  number : String? = null
+//        private var duration: Int = 0
+//        private var ringDuration: Int = 0
+//    }
+//
+//    //    The onReceive() callback handles incoming broadcasts, this time an incoming or outgoing call.
+//    @RequiresApi(Build.VERSION_CODES.O)
+//    override
+//    fun onReceive(context: Context, intent: Intent) {
+//        if (intent.action == Intent.ACTION_NEW_OUTGOING_CALL) {
+//            savedNumber = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER)
+//        } else {
+//            val stateStr = intent.extras!!.getString(TelephonyManager.EXTRA_STATE)
+//            if (intent.extras != null && intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER) != null) {
+//                number = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)
+//                println("Phone 2: $number")}
+//            val state = when (stateStr) {
+//                TelephonyManager.EXTRA_STATE_IDLE -> TelephonyManager.CALL_STATE_IDLE
+//                TelephonyManager.EXTRA_STATE_OFFHOOK
+//                -> TelephonyManager.CALL_STATE_OFFHOOK
+//                TelephonyManager.EXTRA_STATE_RINGING
+//                -> TelephonyManager.CALL_STATE_RINGING
+//                else -> 0
+//            }
+//            if (stateStr == TelephonyManager.EXTRA_STATE_IDLE && lastState == TelephonyManager.CALL_STATE_IDLE ) {
+//                val bundle = Bundle()
+//                bundle.putInt(CallLog.Calls.TYPE, CallLog.Calls.OUTGOING_TYPE)
+//
+//                val cursor = context?.contentResolver?.query(
+//                        CallLog.Calls.CONTENT_URI, null,
+//                        bundle, null
+//                )
+//
+//                duration = cursor!!.getColumnIndex(CallLog.Calls.DURATION)
+//
+//                cursor.moveToLast()
+//                val callDuration = cursor.getString(duration)
+//                println("callDuration: $callDuration")
+//                if(cursor.getInt(duration) != 0){
+//                    ringDuration -= (cursor.getInt(duration))%60
+//                    if(ringDuration<0)
+//                        ringDuration+=120
+//                }
+//                println("ringDuration: $ringDuration")
+//
+//                cursor.close()
+//
+//            }
+//
+//            callStateChanged(context, state, number)
+//        }
+//    }
+//
+//    protected fun onIncomingCallReceived(ctx: Context, number: String?, start: Date) {
+//        Log.e("LOG", "IncomingCallReceived ${number} ${start}")
+//    }
+//
+//    protected fun onIncomingCallAnswered(ctx: Context, number: String?, start: Date) {
+//        Log.e("LOG", "IncomingCallAnswered ${number} ${start}")
+//    }
+//
+//    protected fun onIncomingCallEnded(ctx: Context, number: String?, start: Date?, end: Date) {
+//        Log.e("LOG", "IncomingCallEnded ${number} ${end}")
+//        ringDuration = end.seconds -  start!!.seconds
+//
+//    }
+//
+//    protected fun onOutgoingCallStarted(ctx: Context, number: String?, start: Date) {
+//        Log.e("LOG", "OutgoingCallStarted ${number} ${start}")
+//    }
+//
+//    protected fun onOutgoingCallEnded(ctx: Context, number: String?, start: Date?, end: Date) {
+//        Log.e("LOG", "OutgoingCallEnded ${number} ${end}")
+//        ringDuration = end.seconds -  start!!.seconds
+//
+//
+//    }
+//
+//    protected fun onMissedCall(ctx: Context, number: String?, start: Date?) {
+//        Log.e("LOG", "MissedCall ${number} ${start}")
+//        ringDuration = Date().seconds -  start!!.seconds
+//    }
+//
+//
+//
+////    private method callStateChanged() reacts on the various state changes corresponding to phone calls.
+//    /** * Incoming call: *IDLE -> RINGING when it rings, *-> OFFHOOK when it's answered, *-> IDLE when its hung up * Outgoing call: *IDLE -> OFFHOOK when it dials out,
+//     *-> IDLE when hung up * */
+//    @RequiresApi(Build.VERSION_CODES.O)
+//    private fun callStateChanged(context: Context, state: Int, number: String?) {
+//        if (lastState == state) {
+//            return // no change in state}
+//        }
+//        when (state) {
+//            TelephonyManager.CALL_STATE_RINGING -> {
+//                isIncoming = true
+//                callStartTime = Date()
+//                savedNumber = number
+//                onIncomingCallReceived(context, number, callStartTime!!)
+//                println(" is received : $isIncoming")
+//
+//            }
+//            TelephonyManager.CALL_STATE_OFFHOOK -> if (lastState != TelephonyManager.CALL_STATE_RINGING) {
+//                isIncoming = false
+//                callStartTime = Date()
+//                onOutgoingCallStarted(context, savedNumber, callStartTime!!)
+//                println(" is received : $isIncoming")
+//
+//            } else {
+//                isIncoming = true
+//                callStartTime = Date()
+//                onIncomingCallAnswered(context, savedNumber, callStartTime!!)
+//                println(" is received : $isIncoming")
+//
+//            }
+//            TelephonyManager.CALL_STATE_IDLE
+//            -> {
+//                if (lastState == TelephonyManager.CALL_STATE_RINGING) {//Ring but no pickup- a misson
+//                    onMissedCall(context, savedNumber, callStartTime)
+//                    println(" is received : $isIncoming")
+//
+//                }
+//                else if (isIncoming) {
+//                    onIncomingCallEnded(context, savedNumber, callStartTime, Date())
+//                    println(" is received : $isIncoming")
+//
+//                } else {
+//                    onOutgoingCallEnded(context, savedNumber, callStartTime, Date())
+//                    println(" is received : $isIncoming")
+//                }
+//
+////
+//            }
+//        }
+//        lastState = state
+//    }
+//}
 
 
 //    private  val LOG_TAG = "AudioRecordTest"
@@ -52,6 +175,7 @@ class MainActivity: FlutterActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         checkAndRequestPermission()
+
 
 //        Log.e(LOG_TAG, "akjjvsbvakjjvakjvnajvakja")
 //        callRecord = CallRecord.Builder(this)
@@ -63,6 +187,12 @@ class MainActivity: FlutterActivity() {
 //                .build()
 ////        callRecord.changeReceiver( MyCallRecordReceiver(callRecord))
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        prefs = context.getSharedPreferences("key", MODE_PRIVATE)
+        println(prefs!!.getString("key" , null))
     }
 
 
